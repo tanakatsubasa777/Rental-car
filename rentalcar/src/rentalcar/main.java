@@ -1,9 +1,8 @@
 package rentalcar;
 
 public class main {
-	public static void main(String[] args) {
-		
-		System.out.println("hello world oh my goodness!");
+	public static void main(String[] args) {		
+		System.out.println("hello everyone hahaha");
 		
 	}
 }
