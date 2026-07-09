@@ -1,46 +1,95 @@
-package Model;
-
+package model;
+ 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.time.Period;
 
+import exception.RentalBusinessException;
+ 
 public class Customer {
+
     private int customerId;
+
     private String name;
+
     private LocalDate birthDate;
+
     private String phone;
+
     private String licenseNumber;
+
     private LocalDate licenseDate;
+ 
+    // コンストラクタ
 
-    // Constructor
-    public Customer(int customerId, String name, LocalDate birthDate, String phone, String licenseNumber, LocalDate licenseDate) {
-        this.customerId = customerId;
+    public Customer(String name, LocalDate birthDate, String phone, String licenseNumber, LocalDate licenseDate) {
+
         this.name = name;
+
         this.birthDate = birthDate;
+
         this.phone = phone;
+
         this.licenseNumber = licenseNumber;
+
         this.licenseDate = licenseDate;
-    }
 
-    // Validation Methods
-    public int calculateAge() {
-        return (int) ChronoUnit.YEARS.between(this.birthDate, LocalDate.now());
     }
+ 
+    /**
 
-    public int calculateDrivingExperienceDays() {
-        return (int) ChronoUnit.DAYS.between(this.licenseDate, LocalDate.now());
-    }
+     * 【研修ポイント】実務型オブジェクト指向の重要ロジック！
 
-    public boolean isEligible() {
-        if (calculateAge() < 25) {
-            System.out.println("エラー: 25歳未満のため貸出不可"); 
-            return false;
+     * 「顧客の資格審査」をサービス層に散らかさず、顧客オブジェクト自身のメソッドとしてカプセル化します。
+
+     * @throws RentalBusinessException 審査基準を満たさない場合
+
+     */
+
+    public void validateEligibility() throws RentalBusinessException {
+
+        LocalDate today = LocalDate.now();
+ 
+        // 1. 年齢審査：25歳以上であること (TC-CUS-002 / ERR-AGE-01)
+
+        int age = Period.between(this.birthDate, today).getYears();
+
+        if (age < 25) {
+
+            throw new RentalBusinessException("ERR-AGE-01", 
+
+                "貸出拒否: ご利用は25歳以上のお客様に限らせていただきます。(現在 " + age + " 歳)");
+
         }
-        if (calculateDrivingExperienceDays() < 365) {
-            System.out.println("エラー: 免許取得1年未満のため貸出不可"); 
-            return false;
+ 
+        // 2. 免許歴審査：取得から1年以上経過していること (TC-CUS-003 / ERR-LIC-01)
+
+        int licenseYears = Period.between(this.licenseDate, today).getYears();
+
+        if (licenseYears < 1) {
+
+            throw new RentalBusinessException("ERR-LIC-01", 
+
+                "貸出拒否: 免許取得から1年未満の方はご利用いただけません。(取得日: " + this.licenseDate + ")");
+
         }
-        return true;
+
     }
-    
-    // TODO: Right-click -> Source -> Generate Getters and Setters...
+ 
+    // --- Getter & Setter ---
+
+    public int getCustomerId() { return customerId; }
+
+    public void setCustomerId(int customerId) { this.customerId = customerId; }
+
+    public String getName() { return name; }
+
+    public LocalDate getBirthDate() { return birthDate; }
+
+    public String getPhone() { return phone; }
+
+    public String getLicenseNumber() { return licenseNumber; }
+
+    public LocalDate getLicenseDate() { return licenseDate; }
+
 }
+ 

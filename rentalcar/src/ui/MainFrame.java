@@ -26,13 +26,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
-import Model.Car;
-import Model.Customer;
-import Model.Reservation;
 import dao.CarDAO;
 import dao.CustomerDAO;
 import dao.ReservationDAO;
 import exception.RentalBusinessException;
+import model.Car;
+import model.Customer;
+import model.Reservation;
 
  
 
