@@ -18,7 +18,7 @@ public class CarDAO {
     public List<Car> findAvailableCarsByType(String carType) throws SQLException {
         List<Car> list = new ArrayList<>();
         // 【研修ポイント】SQLインジェクションを防ぐため、変数を直接文字列結合せず "?" を使います。
-        String sql = "SELECT * FROM Cars WHERE Car_Status = 'Available' AND Car_Exist = TRUE";
+        String sql = "SELECT * FROM Cars WHERE Car_Status = 'Available'";
         if (carType != null && !carType.isEmpty() && !"ALL".equalsIgnoreCase(carType)) {
             sql += " AND Car_Type = ?";
         }
